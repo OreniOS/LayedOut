@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'LayedOut_Example' do
+  pod 'LayedOut', :path => '../'
+
+  target 'LayedOut_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase'
+  end
+end
