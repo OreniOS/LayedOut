@@ -22,7 +22,7 @@ pod "LayedOut"
 
 ## Author
 
-oren.farhan@hiho.com, oren.farhan@sergata.com
+Oren Farhan
 
 ## License
 
