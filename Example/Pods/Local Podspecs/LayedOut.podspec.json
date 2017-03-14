@@ -1,0 +1,22 @@
+{
+  "name": "LayedOut",
+  "version": "0.1.0",
+  "summary": "A short description of LayedOut.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/oren.farhan@hiho.com/LayedOut",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "oren.farhan@hiho.com": "oren.farhan@sergata.com"
+  },
+  "source": {
+    "git": "https://github.com/oren.farhan@hiho.com/LayedOut.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "LayedOut/Classes/**/*"
+}

@@ -1,0 +1,23 @@
+PODS:
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
+    - FBSnapshotTestCase/Core
+  - LayedOut (0.1.0)
+
+DEPENDENCIES:
+  - FBSnapshotTestCase
+  - LayedOut (from `../`)
+
+EXTERNAL SOURCES:
+  LayedOut:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
+  LayedOut: 6b616337599df88d633e202be6ac6b2172956bd2
+
+PODFILE CHECKSUM: 9cb546e5e91a7b8266de13020b818fbe82ae791a
+
+COCOAPODS: 1.2.0

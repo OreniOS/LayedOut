@@ -1,0 +1,6 @@
+framework module LayedOut {
+  umbrella header "LayedOut-umbrella.h"
+
+  export *
+  module * { export * }
+}
