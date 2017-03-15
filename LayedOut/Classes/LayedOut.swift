@@ -18,6 +18,7 @@ public enum UKFLayoutsDistribution {
     case horizontal, vertical
 }
 
+// MARK:- Functions
 public extension UIView {
     
     // MARK:- To superview
@@ -451,6 +452,7 @@ public extension UIView {
     ///   - distribution: horizontal or vertical
     ///   - verticalSpacing: Vertical distance between elements
     ///   - horizontalSpacing: Horizontal distance betwee elements
+    ///   - includingEdges: A boolean value to determine whether the spacing should affect the first/last item space from parent
     func distributeSubviews(as distribution: UKFLayoutsDistribution, verticalSpacing: CGFloat = 0, horizontalSpacing: CGFloat = 0, includingEdges: Bool = true) {
         assertThread()
         guard subviews.count > 0 else { return }
@@ -461,135 +463,45 @@ public extension UIView {
             verticalDistribution(verticalSpacing: verticalSpacing, horizontalSpacing: horizontalSpacing, includingEdges: includingEdges)
         }
     }
-    
-    // MARK:- Private
-    
-    @discardableResult
-    private func addSizeConstraint(for attr: NSLayoutAttribute, with constant: CGFloat, relation: NSLayoutRelation = .equal) -> NSLayoutConstraint {
-        assertThread()
-        translatesAutoresizingMaskIntoConstraints = false
-        assert(attr == .width || attr == .height, "addSizeConstraint:: only accepts width or height attributes")
-        let constraint = constraintWith(firstItem: self, firstAttribute: attr, secondItem: nil, secondAttribute: .notAnAttribute, relation: relation, multiplier: 1.0, constant: constant)
-        if !constraints.contains(constraint) {
-            addConstraint(constraint)
-        }
-        return constraint
-    }
-    
-    private func horizontalDistribution(verticalSpacing: CGFloat, horizontalSpacing: CGFloat, includingEdges: Bool) {
-        for (idx, view) in subviews.enumerated() {
-            if idx == 0 {
-                view.setTop(verticalSpacing)
-                view.setBottom(verticalSpacing)
-                view.setLeading(includingEdges ? horizontalSpacing : 0)
-            } else {
-                let prev = subviews[idx-1]
-                view.setLeadingView(prev, constant: horizontalSpacing)
-                let first = subviews.first!
-                view.alignTop(with: first)
-                view.alignBottom(with: first)
-                view.matchWidth(with: first)
-            }
-            if idx == subviews.count - 1 {
-                view.setTrailing(includingEdges ? horizontalSpacing : 0)
-            }
-        }
-    }
-    
-    private func verticalDistribution(verticalSpacing: CGFloat, horizontalSpacing: CGFloat, includingEdges: Bool) {
-        for (idx, view) in subviews.enumerated() {
-            if idx == 0 {
-                view.setTrailing(horizontalSpacing)
-                view.setLeading(horizontalSpacing)
-                view.setTop(includingEdges ? verticalSpacing : 0)
-            } else {
-                let prev = subviews[idx-1]
-                view.setTopView(prev, constant: verticalSpacing)
-                let first = subviews.first!
-                view.alignLeading(with: first)
-                view.alignTrailing(with: first)
-                view.matchHeight(with: first)
-            }
-            if idx == subviews.count - 1 {
-                view.setBottom(includingEdges ? verticalSpacing : 0)
-            }
-        }
-    }
-    
-    private func constraintWith(firstItem: UIView?, firstAttribute: NSLayoutAttribute, secondItem: UIView?, secondAttribute: NSLayoutAttribute, relation: NSLayoutRelation, multiplier: CGFloat, constant: CGFloat) -> NSLayoutConstraint {
-        
-        if let c = findConstaintWhere(firstItem: firstItem, firstAttribute: firstAttribute, secondItem: secondItem, secondAttribute: secondAttribute, relation: relation) {
-            c.constant = constant
-            return c
-        }
-        
-        return NSLayoutConstraint(item: firstItem, attribute: firstAttribute, relatedBy: relation, toItem: secondItem, attribute: secondAttribute, multiplier: multiplier, constant: constant)
-    }
-    
-    private func findConstaintWhere(firstItem: UIView?, firstAttribute: NSLayoutAttribute, secondItem: UIView?, secondAttribute: NSLayoutAttribute, relation: NSLayoutRelation? = .equal) -> NSLayoutConstraint? {
-        
-        for c in constraints {
-            if (c.firstItem as? UIView) == firstItem && c.firstAttribute == firstAttribute && (c.secondItem as? UIView) == secondItem && c.secondAttribute == secondAttribute {
-                if let r = relation, c.relation == r || relation == nil {
-                    return c
-                }
-            }
-        }
-        
-        return nil
-    }
-    
-    fileprivate func findConstraint(for item: UIView?, attribute: NSLayoutAttribute) -> NSLayoutConstraint? {
-        for c in constraints {
-            if ((c.firstItem as? UIView) == item && c.firstAttribute == attribute) || ((c.secondItem as? UIView) == item && c.secondAttribute == attribute) {
-                return c
-            }
-        }
-        return nil
-    }
-    
-    // MARK:- Assertions
-    
-    fileprivate var notSiblingAssertMessage: String { return "Views should be siblings of the save view" }
-    
-    private func assertThread() {
-        assert(Thread.isMainThread, "Trying to set constraint from a background thread")
-    }
-    
-    private func assertSuperView() {
-        assert(superview != nil, "This view has no superview")
-    }
-    
-    private func assertSibling(with otherView: UIView) {
-        assert(superview == otherView.superview, notSiblingAssertMessage)
-    }
 }
+
+// MARK:- Variables
 
 public extension UIView {
     
-    func setWidthConstant(_ w: CGFloat) {
-        var didSet: Bool = false
-        constraints.forEach({ c in
-            if c.firstAttribute == .width && c.firstItem as? NSObject == self {
-                c.constant = w
-                didSet = true
-            }
-        })
-        
-        if !didSet { setWidth(w) }
+    // MARK:- Layouts
+    
+    /// Return the top constraint for the caller, to any view, if exists
+    var topConstraint: NSLayoutConstraint? {
+        return find(attribute: .top)
     }
     
-    func setHeightConstant(_ h: CGFloat) {
-        var didSet: Bool = false
-        constraints.forEach({ c in
-            if c.firstAttribute == .height && c.firstItem as? NSObject == self {
-                c.constant = h
-                didSet = true
-            }
-        })
-        
-        if !didSet { setHeight(h) }
+    /// Return the bottom constraint for the caller, to any view, if exists
+    var bottomConstraint: NSLayoutConstraint? {
+        return find(attribute: .bottom)
     }
+    
+    /// Return the leading constraint for the caller, to any view, if exists
+    var leadingConstraint: NSLayoutConstraint? {
+        return find(attribute: .leading)
+    }
+    
+    /// Return the trailing constraint for the caller, to any view, if exists
+    var trailingConstraint: NSLayoutConstraint? {
+        return find(attribute: .trailing)
+    }
+    
+    /// Return the width constraint for the caller, if exists
+    var widthConstraint: NSLayoutConstraint? {
+        return find(attribute: .width)
+    }
+    
+    /// Return the height constraint for the caller, if exists
+    var heightConstraint: NSLayoutConstraint? {
+        return find(attribute: .height)
+    }
+    
+    // MARK:- Frames
     
     var height: CGFloat {
         set {
@@ -635,36 +547,118 @@ public extension UIView {
             return frame.origin.y
         }
     }
+}
+
+// MARK:- Private
+
+fileprivate extension UIView {
     
-    var topConstraint: NSLayoutConstraint? {
-        return find(attribute: .top)
+    // MARK:- Layouts
+    
+    @discardableResult
+    func addSizeConstraint(for attr: NSLayoutAttribute, with constant: CGFloat, relation: NSLayoutRelation = .equal) -> NSLayoutConstraint {
+        assertThread()
+        translatesAutoresizingMaskIntoConstraints = false
+        assert(attr == .width || attr == .height, "addSizeConstraint:: only accepts width or height attributes")
+        let constraint = constraintWith(firstItem: self, firstAttribute: attr, secondItem: nil, secondAttribute: .notAnAttribute, relation: relation, multiplier: 1.0, constant: constant)
+        if !constraints.contains(constraint) {
+            addConstraint(constraint)
+        }
+        return constraint
     }
     
-    var bottomConstraint: NSLayoutConstraint? {
-        return find(attribute: .bottom)
+    func horizontalDistribution(verticalSpacing: CGFloat, horizontalSpacing: CGFloat, includingEdges: Bool) {
+        for (idx, view) in subviews.enumerated() {
+            if idx == 0 {
+                view.setTop(verticalSpacing)
+                view.setBottom(verticalSpacing)
+                view.setLeading(includingEdges ? horizontalSpacing : 0)
+            } else {
+                let prev = subviews[idx-1]
+                view.setLeadingView(prev, constant: horizontalSpacing)
+                let first = subviews.first!
+                view.alignTop(with: first)
+                view.alignBottom(with: first)
+                view.matchWidth(with: first)
+            }
+            if idx == subviews.count - 1 {
+                view.setTrailing(includingEdges ? horizontalSpacing : 0)
+            }
+        }
     }
     
-    var leadingConstraint: NSLayoutConstraint? {
-        return find(attribute: .leading)
+    func verticalDistribution(verticalSpacing: CGFloat, horizontalSpacing: CGFloat, includingEdges: Bool) {
+        for (idx, view) in subviews.enumerated() {
+            if idx == 0 {
+                view.setTrailing(horizontalSpacing)
+                view.setLeading(horizontalSpacing)
+                view.setTop(includingEdges ? verticalSpacing : 0)
+            } else {
+                let prev = subviews[idx-1]
+                view.setTopView(prev, constant: verticalSpacing)
+                let first = subviews.first!
+                view.alignLeading(with: first)
+                view.alignTrailing(with: first)
+                view.matchHeight(with: first)
+            }
+            if idx == subviews.count - 1 {
+                view.setBottom(includingEdges ? verticalSpacing : 0)
+            }
+        }
     }
     
-    var trailingConstraint: NSLayoutConstraint? {
-        return find(attribute: .trailing)
+    func constraintWith(firstItem: UIView?, firstAttribute: NSLayoutAttribute, secondItem: UIView?, secondAttribute: NSLayoutAttribute, relation: NSLayoutRelation, multiplier: CGFloat, constant: CGFloat) -> NSLayoutConstraint {
+        
+        if let c = findConstaintWhere(firstItem: firstItem, firstAttribute: firstAttribute, secondItem: secondItem, secondAttribute: secondAttribute, relation: relation) {
+            c.constant = constant
+            return c
+        }
+        
+        return NSLayoutConstraint(item: firstItem, attribute: firstAttribute, relatedBy: relation, toItem: secondItem, attribute: secondAttribute, multiplier: multiplier, constant: constant)
     }
     
-    var widthConstraint: NSLayoutConstraint? {
-        return find(attribute: .width)
+    func findConstaintWhere(firstItem: UIView?, firstAttribute: NSLayoutAttribute, secondItem: UIView?, secondAttribute: NSLayoutAttribute, relation: NSLayoutRelation? = .equal) -> NSLayoutConstraint? {
+        
+        for c in constraints {
+            if (c.firstItem as? UIView) == firstItem && c.firstAttribute == firstAttribute && (c.secondItem as? UIView) == secondItem && c.secondAttribute == secondAttribute {
+                if let r = relation, c.relation == r || relation == nil {
+                    return c
+                }
+            }
+        }
+        
+        return nil
     }
     
-    var heightConstraint: NSLayoutConstraint? {
-        return find(attribute: .height)
+    func findConstraint(for item: UIView?, attribute: NSLayoutAttribute) -> NSLayoutConstraint? {
+        for c in constraints {
+            if ((c.firstItem as? UIView) == item && c.firstAttribute == attribute) || ((c.secondItem as? UIView) == item && c.secondAttribute == attribute) {
+                return c
+            }
+        }
+        return nil
     }
     
-    private func find(attribute: NSLayoutAttribute) -> NSLayoutConstraint? {
+    func find(attribute: NSLayoutAttribute) -> NSLayoutConstraint? {
         if attribute.isPrivate {
             return findConstraint(for: self, attribute: attribute)
         }
         return superview?.findConstraint(for: self, attribute: attribute)
     }
+    
+    // MARK:- Assertions
+    
+    var notSiblingAssertMessage: String { return "Views should be siblings of the save view" }
+    
+    func assertThread() {
+        assert(Thread.isMainThread, "Trying to set constraint from a background thread")
+    }
+    
+    func assertSuperView() {
+        assert(superview != nil, "This view has no superview")
+    }
+    
+    func assertSibling(with otherView: UIView) {
+        assert(superview == otherView.superview, notSiblingAssertMessage)
+    }
 }
-

@@ -1,6 +1,6 @@
 # LayedOut
 
-[![CI Status](http://img.shields.io/travis/oren.farhan@hiho.com/LayedOut.svg?style=flat)](https://travis-ci.org/oren.farhan@hiho.com/LayedOut)
+[![CI Status](http://img.shields.io/travis/orenttf@gmail.com/LayedOut.svg?style=flat)](https://travis-ci.org/oren.farhan@hiho.com/LayedOut)
 [![Version](https://img.shields.io/cocoapods/v/LayedOut.svg?style=flat)](http://cocoapods.org/pods/LayedOut)
 [![License](https://img.shields.io/cocoapods/l/LayedOut.svg?style=flat)](http://cocoapods.org/pods/LayedOut)
 [![Platform](https://img.shields.io/cocoapods/p/LayedOut.svg?style=flat)](http://cocoapods.org/pods/LayedOut)
