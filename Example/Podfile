@@ -6,6 +6,5 @@ target 'LayedOut_Example' do
   target 'LayedOut_Tests' do
     inherit! :search_paths
 
-    pod 'FBSnapshotTestCase'
   end
 end

@@ -29,9 +29,9 @@
 
 /* Begin PBXFileReference section */
 		0A55DEC9A65FD9FE60F113ED /* Pods-LayedOut_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LayedOut_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LayedOut_Example/Pods-LayedOut_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		113B34090FC8ACA4852A7CD5 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		113B34090FC8ACA4852A7CD5 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1148EBF46B6A6A2259D30983 /* Pods-LayedOut_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LayedOut_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-LayedOut_Example/Pods-LayedOut_Example.release.xcconfig"; sourceTree = "<group>"; };
-		22D251992D9584240A2ADDCA /* LayedOut.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = LayedOut.podspec; path = ../LayedOut.podspec; sourceTree = "<group>"; };
+		22D251992D9584240A2ADDCA /* LayedOut.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LayedOut.podspec; path = ../LayedOut.podspec; sourceTree = "<group>"; };
 		235DE33BDA8210C833B6200E /* Pods-LayedOut_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LayedOut_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LayedOut_Tests/Pods-LayedOut_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* LayedOut_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LayedOut_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,7 +45,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6684F82748E10856AC94DE85 /* Pods_LayedOut_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LayedOut_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5BC9B760F229E8DDD29549A /* Pods_LayedOut_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LayedOut_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B142794E4D1A7F0241FE1A65 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		B142794E4D1A7F0241FE1A65 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		E544F6B08433162177AE12BF /* Pods-LayedOut_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LayedOut_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LayedOut_Tests/Pods-LayedOut_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -496,6 +496,7 @@
 			baseConfigurationReference = 0A55DEC9A65FD9FE60F113ED /* Pods-LayedOut_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LayedOut/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -510,6 +511,7 @@
 			baseConfigurationReference = 1148EBF46B6A6A2259D30983 /* Pods-LayedOut_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LayedOut/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
